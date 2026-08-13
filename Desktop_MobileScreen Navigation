@@ -30,6 +30,8 @@ class _MyAppState extends State<MyApp> {
             appBar: AppBar(
               title: const Text("Responsive UI"),
             ),
+
+            // ---------------- DRAWER ----------------
             drawer: Drawer(
               child: ListView(
                 children: [
@@ -45,6 +47,8 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ),
                   ),
+
+                  // Home
                   ListTile(
                     leading: const Icon(Icons.home),
                     title: const Text("Home"),
@@ -53,6 +57,8 @@ class _MyAppState extends State<MyApp> {
                       Navigator.pop(context);
                     },
                   ),
+
+                  // Messages
                   ListTile(
                     leading: const Icon(Icons.message),
                     title: const Text("Messages"),
@@ -61,6 +67,8 @@ class _MyAppState extends State<MyApp> {
                       Navigator.pop(context);
                     },
                   ),
+
+                  // Photos
                   ListTile(
                     leading: const Icon(Icons.photo),
                     title: const Text("Photos"),
@@ -69,9 +77,27 @@ class _MyAppState extends State<MyApp> {
                       Navigator.pop(context);
                     },
                   ),
+
+                  // Feedback
+                  ListTile(
+                    leading: const Icon(Icons.feedback),
+                    title: const Text("Feedback"),
+                    onTap: () {
+                      Navigator.pop(context);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FeedbackPage(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
+
+            // ---------------- BODY ----------------
             body: Center(
               child: width < 600
                   ? Column(
@@ -135,6 +161,125 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+// ======================================================
+// FEEDBACK PAGE
+// ======================================================
+
+class FeedbackPage extends StatefulWidget {
+  const FeedbackPage({super.key});
+
+  @override
+  State<FeedbackPage> createState() => _FeedbackPageState();
+}
+
+class _FeedbackPageState extends State<FeedbackPage> {
+  final TextEditingController feedbackController = TextEditingController();
+
+  @override
+  void dispose() {
+    feedbackController.dispose();
+    super.dispose();
+  }
+
+  void submitFeedback() {
+    String feedback = feedbackController.text.trim();
+
+    if (feedback.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter your feedback"),
+        ),
+      );
+      return;
+    }
+
+    // Show success message
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Thank You!"),
+          content: const Text(
+            "Your feedback has been submitted successfully.",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close dialog
+                Navigator.pop(context); // Go back to home
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Feedback"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "We value your feedback!",
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            const Text(
+              "Please tell us about your experience.",
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Feedback TextField
+            TextField(
+              controller: feedbackController,
+              maxLines: 6,
+              decoration: const InputDecoration(
+                hintText: "Enter your feedback here...",
+                border: OutlineInputBorder(),
+                labelText: "Feedback",
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Submit Button
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: submitFeedback,
+                child: const Text(
+                  "Submit Feedback",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
