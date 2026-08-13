@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String message = "Welcome";
+
+  void changeMessage(String text) {
+    setState(() {
+      message = text;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Builder(
+        builder: (BuildContext context) {
+          double width = MediaQuery.of(context).size.width;
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text("Responsive UI"),
+            ),
+            drawer: Drawer(
+              child: ListView(
+                children: [
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child: Text(
+                      "Menu",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.home),
+                    title: const Text("Home"),
+                    onTap: () {
+                      changeMessage("Welcome to Home");
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.message),
+                    title: const Text("Messages"),
+                    onTap: () {
+                      changeMessage("Welcome to Messages");
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo),
+                    title: const Text("Photos"),
+                    onTap: () {
+                      changeMessage("Welcome to Photos");
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            body: Center(
+              child: width < 600
+                  ? Column(
+                      children: [
+                        Text(
+                          message,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Expanded(
+                          child: Image.network(
+                            'https://images.unsplash.com/photo-1580582932707-520aed937b7b',
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    )
+                  : width < 900
+                      ? Column(
+                          children: [
+                            Text(
+                              message,
+                              style: const TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Expanded(
+                              child: Image.network(
+                                'https://images.unsplash.com/photo-1580582932707-520aed937b7b',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Expanded(
+                              child: Image.network(
+                                'https://images.unsplash.com/photo-1580582932707-520aed937b7b',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  message,
+                                  style: const TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
