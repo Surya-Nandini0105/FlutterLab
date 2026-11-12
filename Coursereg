@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+
+void main() =>
+    runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp()
+    ));
+
+class MyApp extends StatelessWidget {
+  final name = TextEditingController();
+  final email = TextEditingController();
+  final pass = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFF3E5F5),
+      appBar: AppBar(
+        title: Text('COURSE REGISTRATION'),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Card(
+          elevation: 5,
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(children: [
+              Icon(Icons.school, size: 55, color: Colors.deepPurple),
+              Text('Student Registration',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              TextField(
+                  controller: name,
+                  decoration: InputDecoration(
+                      labelText: 'Student Name',
+                      prefixIcon: Icon(Icons.person))),
+              TextField(
+                  controller: email,
+                  decoration: InputDecoration(
+                      labelText: 'Email', prefixIcon: Icon(Icons.email))),
+              DropdownButtonFormField(
+                decoration: InputDecoration(labelText: 'Select Course'),
+                items: ['Flutter', 'Java', 'Python']
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
+                onChanged: (v) {},
+              ),
+              TextField(
+                  controller: pass,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      labelText: 'Password', prefixIcon: Icon(Icons.lock))),
+              SizedBox(height: 25),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(double.infinity, 45)),
+                onPressed: () {
+                  if (name.text.isNotEmpty &&
+                      email.text.contains('@') &&
+                      pass.text.length >= 6) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Registration Successful!')));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Enter valid details')));
+                  }
+                },
+                child: Text('REGISTER NOW'),
+              ),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
